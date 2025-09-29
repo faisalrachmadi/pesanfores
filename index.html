@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fore Coffee - Form Pemesanan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2E8B57;
+            --light-green: #8FBC8F;
+            --accent-green: #98FB98;
+            --text-color: #333;
+            --light-gray: #f5f5f5;
+            --border-color: #e0e0e0;
+            --discount-color: #4CAF50;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background-color: var(--light-gray);
+            min-height: 100vh;
+            padding: 10px;
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .header {
+            background: white;
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            max-width: 180px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            padding: 15px;
+        }
+
+        .coffee-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .coffee-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .coffee-emoji {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+            font-size: 1.8rem;
+        }
+
+        .coffee-info {
+            flex-grow: 1;
+        }
+
+        .coffee-name {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--text-color);
+            margin-bottom: 3px;
+        }
+
+        .coffee-desc {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 5px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .price-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 5px;
+        }
+
+        .coffee-price {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .original-price {
+            font-size: 0.8rem;
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .discount-price {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--discount-color);
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .quantity-btn:hover {
+            background: var(--light-green);
+        }
+
+        .quantity-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .quantity-display {
+            font-size: 1rem;
+            font-weight: bold;
+            min-width: 25px;
+            text-align: center;
+        }
+
+        .summary {
+            background: white;
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .summary h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            padding: 12px 0;
+            border-top: 2px solid var(--primary-color);
+            margin-top: 10px;
+        }
+
+        .order-notes {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .order-notes p {
+            margin-bottom: 5px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 15px;
+        }
+
+        .submit-btn:hover {
+            background: var(--light-green);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .customer-info {
+            margin-bottom: 20px;
+        }
+
+        .customer-info h3 {
+            margin-bottom: 12px;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .customer-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .customer-textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            min-height: 80px;
+            resize: vertical;
+            margin-bottom: 10px;
+        }
+
+        .size-selector {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .size-option {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .size-option.selected {
+            background-color: var(--accent-green);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        @media (min-width: 768px) {
+            body {
+                padding: 20px;
+            }
+            
+            .menu-grid {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 20px;
+            }
+            
+            .coffee-card {
+                padding: 20px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .menu-grid {
+                grid-template-columns: repeat(3, 1fr);
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 style="color: #2E8B57; font-size: 1.8rem; margin-bottom: 10px;">FORE COFFEE</h1>
+            <p>Pilih kopi favorit Anda dan pesan sekarang!</p>
+        </div>
+
+        <div class="menu-grid" id="menu-grid">
+            <!-- Menu kopi akan di-generate oleh JavaScript -->
+        </div>
+
+        <div class="summary">
+            <h2>Ringkasan Pesanan</h2>
+            
+            <div class="summary-item">
+                <span>Total Item:</span>
+                <span id="total-items">0 item</span>
+            </div>
+            
+            <div class="summary-item">
+                <span>Subtotal:</span>
+                <span id="subtotal">Rp 0</span>
+            </div>
+            
+            <div class="summary-item">
+                <span>Biaya Layanan:</span>
+                <span id="service-fee">Rp 2.000</span>
+            </div>
+            
+            <div class="summary-total">
+                <span>Total:</span>
+                <span id="total-price">Rp 2.000</span>
+            </div>
+
+            <div class="order-notes">
+                <p>- Order fee Rp 2.000 per total order (100rb)</p>
+                <p>- Harga tertera untuk ukuran Regular, upsize ke Large +Rp 7.000</p>
+                <p>- Bisa seluruh Indonesia, tinggal ambil di Outlet / Delivery dari Outlet yang dipilih</p>
+                <p>- Tersedia juga ukuran 1L untuk beberapa varian</p>
+                <p>ORDER WA 081247499991</p>
+            </div>
+
+            <form id="order-form">
+                <div class="customer-info">
+                    <h3>Informasi Pelanggan</h3>
+                    
+                    <input type="text" class="customer-input" id="customer-name" placeholder="Nama Lengkap" required>
+                    
+                    <input type="tel" class="customer-input" id="customer-phone" placeholder="Nomor Telepon" required>
+                    
+                    <textarea class="customer-textarea" id="customer-address" placeholder="Alamat Pengiriman (opsional)"></textarea>
+                    
+                    <div>
+                        <p style="margin-bottom: 8px; font-size: 0.9rem;">Pilih Ukuran:</p>
+                        <div class="size-selector">
+                            <div class="size-option selected" data-size="regular" onclick="selectSize('regular')">Regular</div>
+                            <div class="size-option" data-size="large" onclick="selectSize('large')">Large (+Rp 7.000)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submit-btn">Pesan Sekarang</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Data menu kopi Fore Coffee
+        const coffeeMenu = [
+            { id: 1, name: "Dirty Matchapresso", price: 31000, discountPrice: 23250, description: "Kombinasi matcha dan espresso yang bold, selakar dua dunia untuk pengalaman kopi yang berbeda" },
+            { id: 2, name: "Malty Latte", price: 27000, discountPrice: 20250, description: "Kopi dengan Traditional Latte tercampur dengan manisnya karamel" },
+            { id: 3, name: "Americano", price: 22000, discountPrice: 16500, description: "Espresso shot yang dicampur dengan segelas air menghasilkan kopi yang ringan" },
+            { id: 4, name: "Matcha Earl Jasmine", price: 31000, discountPrice: 23250, description: "Matcha dengan sensasi aromatik teh melati yang harmonis dan menyegarkan" },
+            { id: 5, name: "Bumi Latte", price: 24000, discountPrice: 18000, description: "Sensasi lembut dan legit dari susu karamel dan butterscotch yang nikmat" },
+            { id: 6, name: "Manuka Americano", price: 29000, discountPrice: 21750, description: "Americano dengan madu Manuka yang pas untuk jadi energy booster" },
+            { id: 7, name: "Matcha Butter Salt Cream", price: 31000, discountPrice: 23250, description: "Perpaduan matcha dengan Butter Salt yang populer dan menyegarkan" },
+            { id: 8, name: "Cappuccino", price: 29000, discountPrice: 21750, description: "Paduan Espresso, susu hangat, dan lapisan foam tebal di atasnya yang lembut" },
+            { id: 9, name: "Triple Peach Americano", price: 29000, discountPrice: 21750, description: "Peach coffee perpaduan rasa kopi, tiga perasaan peach dan aroma buah" },
+            { id: 10, name: "Choco Cookie Shake", price: 29000, discountPrice: 21750, description: "Coklat dengan remahan cookies yang manis dan penuh dengan kelezatan" },
+            { id: 11, name: "Double Iced Shaken Latte", price: 33000, discountPrice: 24750, description: "Paduan klasik 2 shot espresso dengan susu dingin" },
+            { id: 12, name: "Berry Manuka Americano", price: 31000, discountPrice: 23250, description: "Perpaduan rasa Stroberi dan Manuka dengan Classic Blend Fore Coffee" },
+            { id: 13, name: "Dark Chocolate", price: 34000, discountPrice: 25500, description: "Dibuat dari 100% dark chocolate dan paduan susu yang nikmat" },
+            { id: 14, name: "Café Latte", price: 29000, discountPrice: 21750, description: "Paduan espresso dengan susu sapi pilihan dan sedikit foam tanpa gula" },
+            { id: 15, name: "Nutty Oat Latte", price: 39000, discountPrice: 29250, description: "Espresso dari biji kopi khas nusantara dipadukan susu oat gurih" },
+            { id: 16, name: "Almond Choco", price: 39000, discountPrice: 29250, description: "Cokleat klasik dari Fore Coffee yang dipadu dengan susu almond" },
+            { id: 17, name: "Choco Caramel Cloud", price: 29000, discountPrice: 21750, description: "Nikmatnya cream salted caramel dengan paduan dark chocolate" },
+            { id: 18, name: "Buttercream Tiramisu Latte", price: 33000, discountPrice: 24750, description: "Lembutnya Buttercream Tiramisu sebagai topping kopi susu praline" },
+            { id: 19, name: "Matcha Green Tea", price: 34000, discountPrice: 25500, description: "Bubuk matcha spesial Fore yang lembut dan creamy dengan sedikit rasa pahit" },
+            { id: 20, name: "Kopi Dari Tani", price: 24000, discountPrice: 18000, description: "Paduan rasa dan aroma kopi Indonesia yang kuat beraroma gula aren" },
+            { id: 21, name: "Espresso", price: 19000, discountPrice: 14250, description: "Ekstrak biji kopi Arabika murni tanpa campuran" },
+            { id: 22, name: "Classic Milo", price: 25000, discountPrice: 18750, description: "Minuman klasik cokelat dengan rasa malt dengan saus creamy di atasnya" },
+            { id: 23, name: "Butterscotch Sea Salt Latte", price: 33000, discountPrice: 24750, description: "Perpaduan butterscotch dan espresso house blend dengan sea salt" },
+            { id: 24, name: "Caramel Praline Macchiato", price: 33000, discountPrice: 24750, description: "Latte dengan saus Praline dan karamel dengan rasa dan aroma yang khas" },
+            { id: 25, name: "Coco Peach Fusion 1L", price: 90000, discountPrice: 67500, description: "Rasa segar dari peach, lychee, orange, cincau dan kelapa" },
+            { id: 26, name: "Buttercream Latte", price: 31000, discountPrice: 23250, description: "Nikmatnya Buttercream Coffee sebagai topping kopi susu karamel" },
+            { id: 27, name: "Kopi Dari Tani 1L", price: 84000, discountPrice: 63000, description: "Paduan rasa dan aroma kopi Indonesia yang kuat beraroma gula aren" },
+            { id: 28, name: "Aren Latte", price: 29000, discountPrice: 21750, description: "Rasa latte yang asin berpadu sempurna dengan espresso premium" },
+            { id: 29, name: "Bumi Latte 1L", price: 84000, discountPrice: 63000, description: "Sensasi lembut dan legit dari susu karamel dan butterscotch yang nikmat" },
+            { id: 30, name: "Pandan Latte", price: 29000, discountPrice: 21750, description: "Latte dengan aroma unik dari ekstrak pandan alami khas Fore Coffee" },
+            { id: 31, name: "Dark Chocolate 1L", price: 95000, discountPrice: 71250, description: "Dibuat dari 100% dark chocolate dan paduan susu yang nikmat" }
+        ];
+
+        // State untuk menyimpan pesanan
+        let order = {};
+        const serviceFee = 2000;
+        let selectedSize = 'regular';
+        const largeSizeAddition = 7000;
+
+        // Fungsi untuk memilih ukuran
+        function selectSize(size) {
+            selectedSize = size;
+            document.querySelectorAll('.size-option').forEach(option => {
+                if (option.dataset.size === size) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+            updateSummary();
+        }
+
+        // Fungsi untuk render menu kopi
+        function renderMenu() {
+            const menuGrid = document.getElementById('menu-grid');
+            menuGrid.innerHTML = '';
+
+            coffeeMenu.forEach(coffee => {
+                const card = document.createElement('div');
+                card.className = 'coffee-card';
+                card.innerHTML = `
+                    <div class="coffee-emoji">
+                        ☕
+                    </div>
+                    <div class="coffee-info">
+                        <h3 class="coffee-name">${coffee.name}</h3>
+                        <p class="coffee-desc">${coffee.description}</p>
+                        <div class="price-container">
+                            <div class="coffee-price">
+                                <span class="original-price">Rp ${coffee.price.toLocaleString('id-ID')}</span>
+                                <span class="discount-price">Rp ${coffee.discountPrice.toLocaleString('id-ID')}</span>
+                            </div>
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" onclick="decreaseQuantity(${coffee.id})" 
+                                    ${(order[coffee.id] || 0) === 0 ? 'disabled' : ''}>
+                                    -
+                                </button>
+                                
+                                <span class="quantity-display" id="quantity-${coffee.id}">
+                                    ${order[coffee.id] || 0}
+                                </span>
+                                
+                                <button class="quantity-btn" onclick="increaseQuantity(${coffee.id})">
+                                    +
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                menuGrid.appendChild(card);
+            });
+        }
+
+        // Fungsi untuk menambah jumlah pesanan
+        function increaseQuantity(coffeeId) {
+            order[coffeeId] = (order[coffeeId] || 0) + 1;
+            updateQuantityDisplay(coffeeId);
+            updateSummary();
+        }
+
+        // Fungsi untuk mengurangi jumlah pesanan
+        function decreaseQuantity(coffeeId) {
+            order[coffeeId] = Math.max((order[coffeeId] || 0) - 1, 0);
+            updateQuantityDisplay(coffeeId);
+            updateSummary();
+        }
+
+        // Update tampilan quantity
+        function updateQuantityDisplay(coffeeId) {
+            const display = document.getElementById(`quantity-${coffeeId}`);
+            if (display) {
+                display.textContent = order[coffeeId] || 0;
+            }
+            
+            // Update button disable state
+            const buttons = document.querySelectorAll(`.quantity-btn`);
+            buttons.forEach(btn => {
+                if (btn.textContent.trim() === '-') {
+                    const id = btn.onclick.toString().match(/\d+/)[0];
+                    btn.disabled = (order[id] || 0) === 0;
+                }
+            });
+        }
+
+        // Hitung dan update summary
+        function updateSummary() {
+            let totalItems = 0;
+            let subtotal = 0;
+            const sizeAddition = selectedSize === 'large' ? largeSizeAddition : 0;
+
+            Object.entries(order).forEach(([coffeeId, quantity]) => {
+                if (quantity > 0) {
+                    const coffee = coffeeMenu.find(c => c.id === parseInt(coffeeId));
+                    if (coffee) {
+                        totalItems += quantity;
+                        subtotal += quantity * coffee.discountPrice;
+                    }
+                }
+            });
+
+            // Tambahkan biaya tambahan untuk ukuran Large
+            if (selectedSize === 'large' && totalItems > 0) {
+                subtotal += sizeAddition * totalItems;
+            }
+
+            const total = subtotal + serviceFee;
+
+            document.getElementById('total-items').textContent = `${totalItems} item`;
+            document.getElementById('subtotal').textContent = `Rp ${subtotal.toLocaleString('id-ID')}`;
+            document.getElementById('total-price').textContent = `Rp ${total.toLocaleString('id-ID')}`;
+            
+            // Update submit button state
+            document.getElementById('submit-btn').disabled = totalItems === 0;
+        }
+
+        // Handle form submission
+        document.getElementById('order-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const totalItems = Object.values(order).reduce((sum, qty) => sum + qty, 0);
+            if (totalItems === 0) {
+                alert('Silakan pilih minimal satu kopi untuk dipesan');
+                return;
+            }
+
+            const name = document.getElementById('customer-name').value;
+            const phone = document.getElementById('customer-phone').value;
+            
+            if (!name || !phone) {
+                alert('Silakan isi nama dan nomor telepon');
+                return;
+            }
+
+            const address = document.getElementById('customer-address').value;
+            
+            // Siapkan data order
+            const orderData = {
+                customer: { name, phone, address },
+                size: selectedSize,
+                items: coffeeMenu.map(coffee => ({
+                    ...coffee,
+                    quantity: order[coffee.id] || 0
+                })).filter(item => item.quantity > 0),
+                totals: {
+                    totalItems,
+                    subtotal: calculateSubtotal(),
+                    serviceFee,
+                    total: calculateSubtotal() + serviceFee
+                },
+                timestamp: new Date().toISOString()
+            };
+
+            // Tampilkan data order (bisa diganti dengan kirim ke webhook n8n)
+            console.log('Data Order:', orderData);
+            
+            // Kirim ke webhook n8n
+            try {
+                const response = await fetch('https://n8n-pjwnptzbnrh6.caca.sumopod.my.id/webhook-test/2cb171cb-1b22-4d3b-9ce8-d8a1e4fc5f00', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
+                
+                if (response.ok) {
+                    alert('Pesanan berhasil dikirim! Terima kasih.');
+                    // Reset form
+                    order = {};
+                    renderMenu();
+                    updateSummary();
+                    document.getElementById('order-form').reset();
+                    selectSize('regular');
+                } else {
+                    throw new Error('Gagal mengirim pesanan');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan. Silakan coba lagi.');
+            }
+        });
+
+        // Fungsi untuk menghitung subtotal dengan mempertimbangkan ukuran
+        function calculateSubtotal() {
+            let subtotal = 0;
+            const sizeAddition = selectedSize === 'large' ? largeSizeAddition : 0;
+
+            Object.entries(order).forEach(([coffeeId, quantity]) => {
+                if (quantity > 0) {
+                    const coffee = coffeeMenu.find(c => c.id === parseInt(coffeeId));
+                    if (coffee) {
+                        subtotal += quantity * coffee.discountPrice;
+                    }
+                }
+            });
+
+            // Tambahkan biaya tambahan untuk ukuran Large
+            const totalItems = Object.values(order).reduce((sum, qty) => sum + qty, 0);
+            if (selectedSize === 'large' && totalItems > 0) {
+                subtotal += sizeAddition * totalItems;
+            }
+
+            return subtotal;
+        }
+
+        // Initialize
+        renderMenu();
+        updateSummary();
+    </script>
+</body>
+</html>
